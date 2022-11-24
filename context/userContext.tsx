@@ -1,15 +1,19 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { createFirebaseApp } from "../fire/clientApp";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { type } from "os";
 
-export const UserContext: React.Context<any> = createContext({
-  user: null,
-  setUser: undefined,
-  loadingUser: true,
-});
+export type UserContextType = {
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+};
+
+export const UserContext: React.Context<any> = createContext(null);
 
 export default function UserContextComp({ children }: any) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [loadingUser, setLoadingUser] = useState(true); // Helpful, to update the UI accordingly.
 
   useEffect(() => {
@@ -24,7 +28,7 @@ export default function UserContextComp({ children }: any) {
           // You could also look for the user doc in your Firestore (if you have one):
           // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
           setUser({ uid, displayName, email, photoURL });
-        } else setUser(null);
+        } else setUser({});
       } catch (error) {
         // Most probably a connection error. Handle appropriately.
       } finally {
