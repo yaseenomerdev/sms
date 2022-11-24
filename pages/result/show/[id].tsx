@@ -85,12 +85,7 @@ function ResultDetails({ result }: { result: Result | null }) {
             />
           </div>
 
-          <a
-            href={result?.file}
-            target="_blank"
-            download
-            className="flex gap-3 items-center"
-          >
+          <a href={result?.file} download className="flex gap-3 items-center">
             <BsFileEarmarkPdf className="text-gray-500" />
             <span> Download File</span>
           </a>
