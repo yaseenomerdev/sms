@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    @apply w-full border-gray-300 rounded-lg 
+      focus:border-[#20cc99] focus:ring-[#20cc99];
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply py-2 px-4 bg-[#20cc99] text-white font-semibold rounded-lg shadow-md hover:bg-[#0ecd94] focus:outline-none focus:ring-2 focus:ring-[#3cc99f] focus:ring-opacity-75;
+  }
+
+  .btn-secondary {
+    @apply py-2 px-4 cursor-pointer bg-[#b5efde] text-[#20cc99] font-semibold rounded-lg  hover:bg-[#b5d2c9] focus:outline-none focus:ring-2 focus:ring-[#c8e8de] focus:ring-opacity-75;
+  }
+  .text-primary {
+    @apply text-[#20cc99];
+  }
+
+  .text-secondary {
+    @apply text-[#f4f8f9];
+  }
+
+  .bg-primary {
+    @apply bg-[#20cc99];
+  }
+
+  .bg-secondary {
+    @apply bg-[#f4f8f9];
+  }
+}
+
+@layer base {
+  button,
+  select {
+    @apply flex items-center justify-center px-3 py-2 border border-transparent text-base font-medium rounded-md bg-gray-50   md:py-2 md:text-lg md:px-2;
+  }
+}
+
+@layer base {
+  th,
+  td,
+  select {
+    @apply border border-gray-200 p-2;
+  }
+}
+
+/* [type="checkbox"]:checked {
+  background-image: url('data:image/svg+xml,<svg viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/></svg>');
+} */
