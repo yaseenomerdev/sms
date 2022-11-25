@@ -97,7 +97,8 @@ function ResultDetails({ result }: { result: Result | null }) {
 
 export default ResultDetails;
 
-const getRandomImage: string = "https://source.unsplash.com/random/200x200";
+export const getRandomImage: string =
+  "https://source.unsplash.com/random/200x200";
 
 const CheckAndDate = ({
   checked,

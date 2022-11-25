@@ -4,8 +4,10 @@ import Link from "next/link";
 import React from "react";
 import { BsToggleOn, BsToggleOff } from "react-icons/bs";
 
+const initState: Result[] = [];
+
 function ResultList() {
-  const [results, setResults] = React.useState([]);
+  const [results, setResults] = React.useState(initState);
 
   const { displayName, uid } = useUser();
 
