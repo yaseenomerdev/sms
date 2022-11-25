@@ -1,4 +1,3 @@
-import { getResultById, Result } from "fire/clientApp";
 import React, { Context } from "react";
 import { GiCheckMark } from "react-icons/gi";
 import { MdClose, MdOutlineDescription } from "react-icons/md";
@@ -10,6 +9,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 import { HiOutlineUser } from "react-icons/hi";
 import { BsTelephone } from "react-icons/bs";
+import { getResultById, Result } from "features/results/state";
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;

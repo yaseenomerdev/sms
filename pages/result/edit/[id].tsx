@@ -1,5 +1,5 @@
-import ResultForm from "components/results/ResultForm";
-import { getResultById, Result } from "fire/clientApp";
+import ResultForm from "features/results/ResultForm";
+import { getResultById, Result } from "features/results/state";
 import React from "react";
 
 export async function getServerSideProps(context: any) {
@@ -17,7 +17,7 @@ function Edit({ result }: { result: Result | null }) {
   }
   return (
     <div className="flex flex-col justify-center m-5">
-      <h1>Create Result</h1>
+      <h1>Edit Result</h1>
       <div>
         <ResultForm currentResult={result} />
       </div>

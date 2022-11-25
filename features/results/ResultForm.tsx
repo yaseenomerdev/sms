@@ -1,13 +1,12 @@
 import { useUser } from "context/userContext";
-import {
-  addResult,
-  defultValueOnCreate,
-  Result,
-  uploadTask,
-} from "fire/clientApp";
+import { uploadTask } from "fire/clientApp";
 import { getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/router";
 import React from "react";
+import { useAppDispatch } from "store";
+import { defultValueOnCreate, Result, saveResult } from "./state";
+import { ImSpinner10 } from "react-icons/im";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
 let resultId = Date.now();
 
@@ -19,20 +18,26 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
     file: currentResult?.file || "",
   });
 
-  const { loading: loadingUser, user } = useUser();
+  const dispatch = useAppDispatch();
+
+  const { user } = useUser();
 
   const [progress, setProgress] = React.useState(0);
 
   const [uploading, setUploading] = React.useState("");
+
+  const [loading, setLoading] = React.useState(false);
 
   const { push } = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
+
     const data: Partial<Result> = {
-      createdBy: user?.uid,
-      createdByName: user?.displayName || "",
+      createdBy: user?.uid || null,
+      createdByName: user?.displayName || null,
       ...defultValueOnCreate,
       ...result,
     };
@@ -40,11 +45,11 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
     const id = currentResult?.id || resultId.toString();
 
     try {
-      await addResult(id, data);
+      await dispatch(saveResult({ id, result: data }));
       resultId = Date.now();
-
-      push("/result");
-    } catch (error) {
+      return push("/result");
+    } catch (error: any) {
+      alert(JSON.stringify(error));
     } finally {
       setResult({
         name: "",
@@ -52,15 +57,15 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
         phoneNumber: "",
         file: "",
       });
+      setLoading(false);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploading("Uploading");
     const file: File = (e.target.files as FileList)[0];
-    console.log(resultId);
 
-    const upload = uploadTask(file, `results/${resultId}`);
+    const upload = uploadTask(file, `results/${currentResult?.id || resultId}`);
 
     upload.on(
       "state_changed",
@@ -126,9 +131,15 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
       </div>
 
       <div>
-        <label className="btn-secondary">
+        <label
+          className="flex btn-secondary items-center gap-2"
+          style={{
+            cursor: "pointer",
+          }}
+        >
+          <AiOutlineCloudUpload />
           {uploading === "Uploading" && "Uploading..."}
-          {progress === 0 && "Upload file"}
+          {progress === 0 && "Upload file "}
           {progress > 0 && progress < 100 && progress + "%"}
           {progress === 100 && (
             <span className="text-primary">Uploaded successfully</span>
@@ -139,6 +150,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
       <div>
         <button type="submit" className="btn-primary">
+          {loading && <ImSpinner10 className="animate-spin" />}
           Save
         </button>
       </div>

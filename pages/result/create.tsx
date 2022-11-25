@@ -1,5 +1,5 @@
 import React from "react";
-import ResultForm from "components/results/ResultForm";
+import ResultForm from "features/results/ResultForm";
 
 function CreateRsult() {
   return (

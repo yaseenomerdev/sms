@@ -1,16 +1,7 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  getFirestore,
-  QuerySnapshot,
-  setDoc,
-} from "firebase/firestore";
+import { DocumentData, getFirestore, QuerySnapshot } from "firebase/firestore";
 import {
   deleteObject,
   getStorage,
@@ -55,91 +46,19 @@ export const uploadTask = (file: File, path: string): UploadTask => {
   return uploadBytesResumable(storageRef, file);
 };
 
-export interface Result {
-  id: string;
-  name: string;
-  description: string;
-  phoneNumber: string;
-  file: string;
-  createdAt: number;
-  createdBy: string;
-  createdByName: string;
-  updatedAt: number | null;
-  sentForClient: boolean;
-  sentForClientAt: number | null;
-  readByClient: boolean;
-  readByClientAt: number | null;
-  archive: boolean;
-  arrchiveAt: number | null;
-  arrchiveBy: string | null;
-  arrchiveByName: string | null;
+export function convertSnaps<T extends { id: string }>(
+  snaps: QuerySnapshot<DocumentData>
+): T[] {
+  const data: T[] = [];
+  snaps.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data() } as T);
+  });
+  return data;
 }
 
-export const defultValueOnCreate: Partial<Result> = {
-  createdAt: Date.now(),
-  updatedAt: null,
-  sentForClient: false,
-  sentForClientAt: null,
-  readByClient: false,
-  readByClientAt: null,
-  archive: false,
-  arrchiveAt: null,
-  arrchiveBy: null,
-};
-
-export const getResults = async () => {
-  const query = collection(firestore, "results");
-  const snaps = await getDocs(query);
-  const results = await convertSnapToResult(snaps);
-
-  return results;
-};
-
-export const addResult = async (id: string, result: Partial<Result>) => {
-  return setDoc(doc(firestore, "results", id), result, {
-    merge: true,
-  })
-    .then(() => result)
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-};
-
-export const deleteResult = async (id: string) => {
-  return deleteDoc(doc(firestore, "results", id))
-    .then(() => {
-      deleteFileFromStorage(`results/${id}`);
-      return id;
-    })
-    .catch((error) => {
-      console.error("Error removing document: ", error);
-    });
-};
-
-export const convertSnapToResult = async (
-  snap: QuerySnapshot
-): Promise<Result[]> => {
-  const results: Result[] = [];
-  snap.forEach((doc) => {
-    results.push({
-      id: doc.id,
-      ...doc.data(),
-    } as Result);
-  });
-  return results;
-};
-
 export const deleteFileFromStorage = async (path: string) => {
-  const storageRef = ref(storage, path);
-  return deleteObject(storageRef);
-};
-
-export const getResultById = async (id: string): Promise<Result | null> => {
-  const docRef = doc(firestore, "results", id);
-  const snap = await getDoc(docRef);
-  if (!snap) return null;
-  return {
-    id: snap.id,
-    ...snap.data(),
-  } as Result;
+  if (path) {
+    const storageRef = ref(storage, path);
+    deleteObject(storageRef);
+  }
 };

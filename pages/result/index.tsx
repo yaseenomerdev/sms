@@ -1,53 +1,33 @@
 import { useUser } from "context/userContext";
-import { addResult, deleteResult, getResults, Result } from "fire/clientApp";
+import {
+  archiveResult,
+  deleteResult,
+  fetchResults,
+  Result,
+} from "features/results/state";
 import Link from "next/link";
 import React from "react";
-import { BsToggleOn, BsToggleOff } from "react-icons/bs";
+import { AppState, useAppDispatch, useAppSelector } from "store";
+import { MdModeEdit, MdDelete, MdArchive } from "react-icons/md";
+import { IoMdEye } from "react-icons/io";
 
 function ResultList() {
-  const [results, setResults] = React.useState<Result[]>([]);
-
   const { user } = useUser();
+  const dispatch = useAppDispatch();
 
-  const [arrcive, setArrcive] = React.useState(false);
+  const { results, loading } = useAppSelector(
+    (state: AppState) => state.result
+  );
 
   React.useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await getResults();
-        setResults(data);
-      } catch (error) {}
-    };
-
-    getData();
+    dispatch(fetchResults());
   }, []);
-
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteResult(id);
-      const newResults = results.filter((result: any) => result.id !== id);
-      setResults(newResults);
-    } catch (error) {}
-  };
-
-  const handleArchive = async (id: string, archive: boolean) => {
-    await addResult(id, {
-      archive,
-      arrchiveBy: user?.uid || null,
-      arrchiveByName: user?.displayName || null,
-      arrchiveAt: Date.now(),
-    });
-
-    const data = await getResults();
-
-    setResults(data);
-  };
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <Link href="/result/create">
-          <button className="btn-primary">Create Result</button>
+          <button className="btn-primary">Add Result</button>
         </Link>
       </div>
 
@@ -59,7 +39,6 @@ function ResultList() {
               <td>Image</td>
               <th>Name</th>
               <th>Phone Number</th>
-              <th>Arrcive</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -73,35 +52,43 @@ function ResultList() {
                 <td>{result?.name}</td>
                 <td>{result?.phoneNumber}</td>
                 <td>
-                  {result?.archive ? (
-                    <BsToggleOn
-                      size={30}
-                      className="text-red-500 cursor-pointer"
-                      onClick={() => handleArchive(result.id, false)}
-                    />
-                  ) : (
-                    <BsToggleOff
-                      size={30}
-                      className="text-green-500 cursor-pointer"
-                      onClick={() => handleArchive(result.id, true)}
-                    />
-                  )}
-                </td>
-                <td>
                   <div className="flex gap-4">
                     <Link href={`/result/show/${result.id}`}>
-                      <button className="btn-secondary">details</button>
+                      <button>
+                        <IoMdEye />
+                        Details
+                      </button>
                     </Link>
 
                     <Link href={`/result/edit/${result.id}`}>
-                      <button className="btn-secondary">Edit</button>
+                      <button>
+                        <MdModeEdit />
+                        Edit
+                      </button>
                     </Link>
 
                     <button
                       className="btn-danger"
-                      onClick={() => handleDelete(result.id)}
+                      onClick={() =>
+                        dispatch(
+                          archiveResult({
+                            id: result.id,
+                            archive: true,
+                            archiveBy: user?.uid,
+                            archiveByName: user?.displayName,
+                          })
+                        )
+                      }
                     >
-                      Delete
+                      <MdArchive />
+                      archive
+                    </button>
+
+                    <button
+                      className="btn-danger"
+                      onClick={() => dispatch(deleteResult(result.id))}
+                    >
+                      <MdDelete />
                     </button>
                   </div>
                 </td>
