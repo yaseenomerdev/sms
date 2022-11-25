@@ -19,7 +19,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
     file: currentResult?.file || "",
   });
 
-  const { loadingUser, user } = useUser();
+  const { loading: loadingUser, user } = useUser();
 
   const [progress, setProgress] = React.useState(0);
 
@@ -31,8 +31,8 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
     e.preventDefault();
 
     const data: Partial<Result> = {
-      createdBy: user.uid,
-      createdByName: user.displayName,
+      createdBy: user?.uid,
+      createdByName: user?.displayName || "",
       ...defultValueOnCreate,
       ...result,
     };

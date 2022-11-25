@@ -4,12 +4,10 @@ import Link from "next/link";
 import React from "react";
 import { BsToggleOn, BsToggleOff } from "react-icons/bs";
 
-const initState: Result[] = [];
-
 function ResultList() {
-  const [results, setResults] = React.useState(initState);
+  const [results, setResults] = React.useState<Result[]>([]);
 
-  const { displayName, uid } = useUser();
+  const { user } = useUser();
 
   const [arrcive, setArrcive] = React.useState(false);
 
@@ -35,8 +33,8 @@ function ResultList() {
   const handleArchive = async (id: string, archive: boolean) => {
     await addResult(id, {
       archive,
-      arrchiveBy: uid || null,
-      arrchiveByName: displayName || null,
+      arrchiveBy: user?.uid || null,
+      arrchiveByName: user?.displayName || null,
       arrchiveAt: Date.now(),
     });
 

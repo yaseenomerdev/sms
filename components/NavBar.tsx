@@ -4,7 +4,7 @@ import { useUser } from "context/userContext";
 import LogOut from "./LogOut";
 
 export default function NavBar() {
-  const { loadingUser, user } = useUser();
+  const { loading: loadingUser, user } = useUser();
   return (
     <nav className="flex p-5 bg-[#f4f8f9] gap-4">
       <div className="flex gap-4">

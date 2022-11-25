@@ -1,15 +1,13 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useUser } from "context/userContext";
 
-const Home: NextPage = () => {
-  const { loadingUser, user } = useUser();
+const Home = () => {
+  const { user, loading: loadingUser } = useUser();
 
   useEffect(() => {
     if (!loadingUser) {
       // You know that the user is loaded: either logged in or out!
-      console.log(user);
     }
     // You also have your firebase app initialized
   }, [loadingUser, user]);

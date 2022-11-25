@@ -1,20 +1,19 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { createFirebaseApp } from "../fire/clientApp";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import { type } from "os";
 
-export type UserContextType = {
-  uid: string;
-  displayName: string | null;
-  email: string | null;
-  photoURL: string | null;
+type UserContextType = {
+  user: Partial<User> | null;
+  loading: boolean;
+  setUser?: React.Dispatch<React.SetStateAction<Partial<User | null>>>;
 };
 
-export const UserContext: React.Context<any> = createContext(null);
+export const UserContext: React.Context<Partial<UserContextType>> =
+  createContext({} as ReturnType<typeof useUser>);
 
 export default function UserContextComp({ children }: any) {
-  const [user, setUser] = useState({});
-  const [loadingUser, setLoadingUser] = useState(true); // Helpful, to update the UI accordingly.
+  const [user, setUser] = useState<Partial<User | null>>(null);
+  const [loading, setLoadingUser] = useState(true); // Helpful, to update the UI accordingly.
 
   useEffect(() => {
     // Listen authenticated user
@@ -28,7 +27,7 @@ export default function UserContextComp({ children }: any) {
           // You could also look for the user doc in your Firestore (if you have one):
           // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
           setUser({ uid, displayName, email, photoURL });
-        } else setUser({});
+        } else setUser(null);
       } catch (error) {
         // Most probably a connection error. Handle appropriately.
       } finally {
@@ -41,7 +40,13 @@ export default function UserContextComp({ children }: any) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, loadingUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        loading,
+        setUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

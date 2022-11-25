@@ -3,10 +3,8 @@ import React from "react";
 import { httpClient } from "../utils/api.util";
 import { getRandomImage } from "./result/show/[id]";
 
-const initState: User[] = [];
-
 export default function Users() {
-  const [users, setUsers] = React.useState(initState);
+  const [users, setUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
     const getUsers = async () => {
