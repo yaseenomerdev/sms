@@ -64,7 +64,7 @@ function ResultDetails({ result }: { result: Result | null }) {
           <div className="flex gap-3 items-center">
             <BiArchive className="text-gray-500" />
             Archive:{" "}
-            <CheckAndDate checked={result.archive} date={result?.arrchiveAt} />
+            <CheckAndDate checked={result.archive} date={result?.archiveAt} />
           </div>
 
           <div className="flex gap-3 items-center">
