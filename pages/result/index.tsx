@@ -12,6 +12,7 @@ import { MdModeEdit, MdDelete, MdArchive } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
 import { useRouter } from "next/router";
 import AuthGuard from "components/AuthGuard";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 
 function ResultList() {
   const { user } = useUser();
@@ -53,7 +54,9 @@ function ResultList() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  <img src={result?.file} width="50" height={50} />
+                  <a href={result?.file} target="_blank">
+                    <BsFileEarmarkPdf size={30} className="text-red-600" />
+                  </a>
                 </td>
                 <td>{result?.name}</td>
                 <td>{result?.phoneNumber}</td>

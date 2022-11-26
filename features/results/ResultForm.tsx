@@ -4,7 +4,12 @@ import { getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/router";
 import React from "react";
 import { useAppDispatch } from "store";
-import { defultValueOnCreate, Result, saveResult } from "./state";
+import {
+  checkFileIsPdf,
+  defultValueOnCreate,
+  Result,
+  saveResult,
+} from "./state";
 import { ImSpinner10 } from "react-icons/im";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 
@@ -62,8 +67,11 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUploading("uploading");
     const file: File = (e.target.files as FileList)[0];
+
+    if (!checkFileIsPdf(file)) return alert("File must be pdf");
+
+    setUploading("uploading");
 
     const upload = uploadTask(file, `results/${currentResult?.id || resultId}`);
 
@@ -119,15 +127,15 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
       <div>
         <label htmlFor="description">Description</label>
-        <input
-          type="text"
+        <textarea
           name="description"
           id="description"
+          rows={5}
           value={result.description}
           onChange={(e) =>
             setResult({ ...result, description: e.target.value })
           }
-        />
+        ></textarea>
       </div>
 
       <div>
@@ -140,13 +148,14 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
         >
           <AiOutlineCloudUpload className="animate-bounce " />
           {uploading === "uploading" && "Uploading..."}
-          {progress === 0 && "Upload file "}
+          {progress === 0 && "Upload file (pdf only) "}
           {progress > 0 && progress < 100 && progress + "%"}
           {progress === 100 && (
             <span className="text-primary">Uploaded successfully</span>
           )}
           <input
             type="file"
+            accept="application/pdf"
             name="file"
             id="file"
             hidden

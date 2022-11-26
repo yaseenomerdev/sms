@@ -31,10 +31,18 @@ function ResultDetails({ result }: { result: Result | null }) {
 
   if (!user) return <AuthGuard />;
   return (
-    <div className="flex flex-col justify-center items-center bg-secondary p-6">
+    <div className="grid sm:grid-cols-2 md:grid-cols-2  bg-secondary p-6 gap-4">
       {/* <div>
         <img src={result?.file || getRandomImage} width="200" />
       </div> */}
+      <div>
+        <object
+          data={result?.file}
+          type="application/pdf"
+          width="100%"
+          height="100%"
+        />
+      </div>
       <div>
         <div className="flex gap-4">
           <HiOutlineUser className=" text-gray-500" />

@@ -29,3 +29,7 @@ export const defultValueOnCreate: Partial<Result> = {
   archiveAt: null,
   archiveBy: null,
 };
+
+export function checkFileIsPdf(file: File): boolean {
+  return file.type === "application/pdf";
+}
