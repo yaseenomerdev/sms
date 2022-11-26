@@ -62,7 +62,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUploading("Uploading");
+    setUploading("uploading");
     const file: File = (e.target.files as FileList)[0];
 
     const upload = uploadTask(file, `results/${currentResult?.id || resultId}`);
@@ -132,24 +132,35 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
       <div>
         <label
+          htmlFor="file"
           className="flex btn-secondary items-center gap-2"
           style={{
             cursor: "pointer",
           }}
         >
-          <AiOutlineCloudUpload />
-          {uploading === "Uploading" && "Uploading..."}
+          <AiOutlineCloudUpload className="animate-bounce " />
+          {uploading === "uploading" && "Uploading..."}
           {progress === 0 && "Upload file "}
           {progress > 0 && progress < 100 && progress + "%"}
           {progress === 100 && (
             <span className="text-primary">Uploaded successfully</span>
           )}
-          <input type="file" name="file" hidden onChange={handleChange} />
+          <input
+            type="file"
+            name="file"
+            id="file"
+            hidden
+            onChange={handleChange}
+          />
         </label>
       </div>
 
       <div>
-        <button type="submit" className="btn-primary">
+        <button
+          type="submit"
+          disabled={loading || uploading === "uploading"}
+          className="btn-primary"
+        >
           {loading && <ImSpinner10 className="animate-spin" />}
           Save
         </button>

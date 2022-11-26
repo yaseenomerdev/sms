@@ -1,3 +1,5 @@
+import AuthGuard from "components/AuthGuard";
+import { useUser } from "context/userContext";
 import { User } from "firebase/auth";
 import React from "react";
 import { httpClient } from "../utils/api.util";
@@ -39,6 +41,10 @@ export default function Users() {
       alert("error");
     }
   };
+
+  const { user } = useUser();
+
+  if (!user) return <AuthGuard />;
 
   return (
     <table className="table-auto mt-10">

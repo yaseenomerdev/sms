@@ -10,6 +10,8 @@ import { BsFileEarmarkPdf } from "react-icons/bs";
 import { HiOutlineUser } from "react-icons/hi";
 import { BsTelephone } from "react-icons/bs";
 import { getResultById, Result } from "features/results/state";
+import AuthGuard from "components/AuthGuard";
+import { useUser } from "context/userContext";
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;
@@ -24,6 +26,10 @@ function ResultDetails({ result }: { result: Result | null }) {
   if (!result) {
     return <div>Result not found</div>;
   }
+
+  const { user } = useUser();
+
+  if (!user) return <AuthGuard />;
   return (
     <div className="flex flex-col justify-center items-center bg-secondary p-6">
       {/* <div>

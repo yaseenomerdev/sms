@@ -10,6 +10,8 @@ import React from "react";
 import { AppState, useAppDispatch, useAppSelector } from "store";
 import { MdModeEdit, MdDelete, MdArchive } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
+import { useRouter } from "next/router";
+import AuthGuard from "components/AuthGuard";
 
 function ResultList() {
   const { user } = useUser();
@@ -22,6 +24,10 @@ function ResultList() {
   React.useEffect(() => {
     dispatch(fetchResults());
   }, []);
+
+  const router = useRouter();
+
+  if (!user) return <AuthGuard />;
 
   return (
     <div className="flex flex-col gap-6">
@@ -86,7 +92,11 @@ function ResultList() {
 
                     <button
                       className="btn-danger"
-                      onClick={() => dispatch(deleteResult(result.id))}
+                      onClick={() =>
+                        confirm(
+                          "Are you sure you want to delete this result?"
+                        ) && dispatch(deleteResult(result.id))
+                      }
                     >
                       <MdDelete />
                     </button>
