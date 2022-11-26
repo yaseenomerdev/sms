@@ -1,5 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import { Analytics } from "@vercel/analytics/react";
+
 import UserProvider from "../context/userContext";
 import NavBar from "../components/NavBar";
 import { Provider } from "react-redux";
@@ -12,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NavBar />
         <div className="m-5">
           <Component {...pageProps} />
+          <Analytics />
         </div>
       </UserProvider>
     </Provider>
