@@ -8,6 +8,8 @@ import { getRandomImage } from "./result/show/[id]";
 export default function Users() {
   const [users, setUsers] = React.useState<User[]>([]);
 
+  const { user } = useUser();
+
   React.useEffect(() => {
     const getUsers = async () => {
       const users = await httpClient("/api/users");
@@ -59,8 +61,6 @@ export default function Users() {
       alert("error");
     }
   };
-
-  const { user } = useUser();
 
   if (!user) return <AuthGuard />;
 

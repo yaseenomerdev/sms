@@ -23,11 +23,11 @@ export async function getServerSideProps(context: any) {
 }
 
 function ResultDetails({ result }: { result: Result | null }) {
+  const { user } = useUser();
+
   if (!result) {
     return <div>Result not found</div>;
   }
-
-  const { user } = useUser();
 
   if (!user) return <AuthGuard />;
   return (

@@ -14,9 +14,7 @@ export async function getServerSideProps(context: any) {
 }
 
 function Edit({ result }: { result: Result | null }) {
-
   const { user } = useUser();
-
 
   if (!result) {
     return <div>Result not found</div>;
