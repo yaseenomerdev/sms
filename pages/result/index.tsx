@@ -18,9 +18,7 @@ function ResultList() {
   const { user } = useUser();
   const dispatch = useAppDispatch();
 
-  const { results, loading } = useAppSelector(
-    (state: AppState) => state.result
-  );
+  const { results } = useAppSelector((state: AppState) => state.result);
 
   React.useEffect(() => {
     dispatch(fetchResults());
@@ -54,7 +52,7 @@ function ResultList() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  <a href={result?.file} target="_blank">
+                  <a href={result?.file} target="_blank" rel="noreferrer">
                     <BsFileEarmarkPdf size={30} className="text-red-600" />
                   </a>
                 </td>
