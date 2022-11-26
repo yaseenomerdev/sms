@@ -24,7 +24,7 @@ function ResultList() {
 
   React.useEffect(() => {
     dispatch(fetchResults());
-  }, []);
+  }, [dispatch]);
 
   const router = useRouter();
 
