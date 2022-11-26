@@ -12,6 +12,24 @@ export default function Users() {
     const getUsers = async () => {
       const users = await httpClient("/api/users");
       setUsers(users);
+
+      const options = {
+        method: "POST",
+        headers: {
+          "X-RapidAPI-Key":
+            "11a94503fdmsh43d65526e583642p1a7528jsnf78e5f6a5a9a",
+          "X-RapidAPI-Host":
+            "telesign-telesign-send-sms-verification-code-v1.p.rapidapi.com",
+        },
+      };
+
+      fetch(
+        "https://telesign-telesign-send-sms-verification-code-v1.p.rapidapi.com/sms-verification-code?phoneNumber=%00249913897350&verifyCode=12345",
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => console.log(response))
+        .catch((err) => console.error(err));
     };
     getUsers();
   }, []);
