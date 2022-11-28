@@ -11,6 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import { Result } from "./model";
+
 /**
  * Get all results
  * @returns {Promise<Result[]>}
@@ -108,4 +109,49 @@ export const getResultById = async (id: string): Promise<Result | null> => {
     id: snap.id,
     ...snap.data(),
   } as Result;
+};
+
+export const sendResultToSms = createAsyncThunk(
+  "result/sendSms",
+  async ({
+    id,
+    phoneNumber,
+    name,
+  }: {
+    id: string;
+    phoneNumber: string | null | undefined;
+    name: string | null | undefined;
+  }) => {
+    const fileUrl = `https://sms-ruddy.vercel.app/result/download/${id}`;
+    const message = `مرحبا ${name}، تم إرسال نتيجة الفحص الخاصة بكم، يمكنكم الاطلاع عليها من خلال الرابط التالي: ${fileUrl}`;
+    try {
+      if (!phoneNumber || !name) return;
+      const isSend = await sendSmsToUser(phoneNumber, message);
+      return id;
+    } catch (error: any) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+const sendSmsToUser = async (
+  phone: string,
+  message: string
+): Promise<boolean> => {
+  const response = await fetch(smsUrlWithParams(phone, message));
+
+  let isSend = false;
+  if (response.ok) {
+    isSend = true;
+  }
+  return isSend;
+};
+
+const smsUrlWithParams = (
+  phone: string,
+  message: string,
+  user = "Alzarga",
+  pwd = "80098"
+): string => {
+  return `http://212.0.129.229/bulksms/webacc.aspx?user=${user}&pwd=${pwd}&smstext=${message}&Sender=Alzarga&Nums=${phone}`;
 };

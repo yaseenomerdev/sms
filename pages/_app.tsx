@@ -1,21 +1,36 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
 import { Analytics } from "@vercel/analytics/react";
+import NextNProgress from "nextjs-progressbar";
+import AppLayout from "layouts/appLayout";
+import Guest from "layouts/guest";
 
 import UserProvider from "../context/userContext";
 import NavBar from "../components/NavBar";
 import { Provider } from "react-redux";
 import store from "store";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const layouts: any = {
+  L1: AppLayout,
+  L2: Guest,
+};
+
+function MyApp({ Component, pageProps }: any) {
+  const Layout = layouts[Component.layout || "L1"];
   return (
     <Provider store={store}>
       <UserProvider>
-        <NavBar />
-        <div className="m-5">
+        <Layout>
+          <NextNProgress
+            color="#20cc99"
+            startPosition={0.3}
+            stopDelayMs={200}
+            height={7}
+            showOnShallow={true}
+          />
+
           <Component {...pageProps} />
           <Analytics />
-        </div>
+        </Layout>
       </UserProvider>
     </Provider>
   );

@@ -1,6 +1,11 @@
 import { useUser } from "context/userContext";
 import { uploadTask } from "fire/clientApp";
-import { getDownloadURL } from "firebase/storage";
+import {
+  getDownloadURL,
+  StorageError,
+  UploadTask,
+  UploadTaskSnapshot,
+} from "firebase/storage";
 import { useRouter } from "next/router";
 import React from "react";
 import { useAppDispatch } from "store";
@@ -9,6 +14,7 @@ import {
   defultValueOnCreate,
   Result,
   saveResult,
+  sendResultToSms,
 } from "./state";
 import { ImSpinner10 } from "react-icons/im";
 import { AiOutlineCloudUpload } from "react-icons/ai";
@@ -51,6 +57,13 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
     try {
       await dispatch(saveResult({ id, result: data }));
+      dispatch(
+        sendResultToSms({
+          id,
+          phoneNumber: data.phoneNumber,
+          name: data.name,
+        })
+      );
       resultId = Date.now();
       return push("/result");
     } catch (error: any) {
@@ -73,17 +86,20 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
     setUploading("uploading");
 
-    const upload = uploadTask(file, `results/${currentResult?.id || resultId}`);
+    const upload: UploadTask = uploadTask(
+      file,
+      `results/${currentResult?.id || resultId}`
+    );
 
     upload.on(
       "state_changed",
-      (snapshot) => {
+      (snapshot: UploadTaskSnapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
         setProgress(progress);
       },
-      (error) => {
+      (error: StorageError) => {
         console.log(error);
         setUploading("");
       },

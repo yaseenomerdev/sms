@@ -6,6 +6,7 @@ import {
   fetchResults,
   getResultById,
   saveResult,
+  sendResultToSms,
 } from "./thunk";
 
 const initialState = {
@@ -58,8 +59,6 @@ const resultsSlice = createSlice({
       state.error = action.error.message || "Something went wrong";
     });
 
-    
-
     builder.addCase(deleteResult.pending, (state) => {
       state.loading = true;
     });
@@ -89,6 +88,20 @@ const resultsSlice = createSlice({
     builder.addCase(archiveResult.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "Something went wrong";
+    });
+
+    builder.addCase(sendResultToSms.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(sendResultToSms.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(sendResultToSms.rejected, (state, action) => {
+      state.loading = false;
+      state.error = null;
     });
   },
 });
