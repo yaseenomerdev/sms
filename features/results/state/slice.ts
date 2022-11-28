@@ -96,6 +96,12 @@ const resultsSlice = createSlice({
 
     builder.addCase(sendResultToSms.fulfilled, (state, action) => {
       state.loading = false;
+      state.results = state.results.map((r) => {
+        if (r.id === action.payload.id) {
+          return { ...r, sentForClient: true };
+        }
+        return r;
+      });
       state.error = null;
     });
 

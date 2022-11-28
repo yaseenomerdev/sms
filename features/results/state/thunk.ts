@@ -129,6 +129,9 @@ export const sendResultToSms = createAsyncThunk(
       const response = await sendSmsToUser(phoneNumber, message);
       if (response.isSend) {
         markResultAsSent(id);
+        return { id, isSend: true };
+      } else {
+        throw new Error("Error sending sms");
       }
     } catch (error: any) {
       throw new Error(error?.message);

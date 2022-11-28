@@ -18,7 +18,9 @@ export default async function handler(
 
   const response = await fetch(smsUrlWithParams(phone, message));
 
-  if (response.ok) {
+  const text = await response.text();
+
+  if (text == "Ok") {
     isSend = true;
   }
 
