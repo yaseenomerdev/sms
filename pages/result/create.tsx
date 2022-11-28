@@ -8,8 +8,8 @@ function CreateRsult() {
 
   if (!user) return <AuthGuard />;
   return (
-    <div className="flex flex-col justify-center m-5">
-      <h1>Create Result</h1>
+    <div className="flex flex-col justify-center m-5  gap-4">
+      <h1 className="text-primary font-extrabold text-3xl">Add Result</h1>
       <div>
         <ResultForm />
       </div>

@@ -17,7 +17,7 @@ import {
   sendResultToSms,
 } from "./state";
 import { ImSpinner10 } from "react-icons/im";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import { AiOutlineCloudUpload, AiOutlineSave } from "react-icons/ai";
 
 let resultId = Date.now();
 
@@ -51,19 +51,26 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
       createdByName: user?.displayName || null,
       ...defultValueOnCreate,
       ...result,
+      phoneNumber:
+        currentResult?.phoneNumber ||
+        checkIsFristNumberIsZero(result.phoneNumber),
     };
 
     const id = currentResult?.id || resultId.toString();
 
     try {
       await dispatch(saveResult({ id, result: data }));
-      dispatch(
-        sendResultToSms({
-          id,
-          phoneNumber: data.phoneNumber,
-          name: data.name,
-        })
-      );
+
+      if (!currentResult) {
+        dispatch(
+          sendResultToSms({
+            id,
+            phoneNumber: data.phoneNumber,
+            name: data.name,
+          })
+        );
+      }
+
       resultId = Date.now();
       return push("/result");
     } catch (error: any) {
@@ -115,7 +122,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col bg-secondary justify-center gap-4 p-6"
+      className="flex flex-col bg-secondary justify-center gap-4 p-6 rounded-lg"
     >
       <div>
         <label htmlFor="name">Name</label>
@@ -135,6 +142,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
           name="phoneNumber"
           id="name"
           value={result.phoneNumber}
+          placeholder="Ex: 0912345678 without +249 or 00249"
           onChange={(e) =>
             setResult({ ...result, phoneNumber: e.target.value })
           }
@@ -187,6 +195,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
           className="btn-primary"
         >
           {loading && <ImSpinner10 className="animate-spin" />}
+          <AiOutlineSave className="mr-1" size={20} />
           Save
         </button>
       </div>
@@ -195,3 +204,11 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 }
 
 export default ResultForm;
+
+const checkIsFristNumberIsZero = (phoneNumber: string): string => {
+  const isZero = phoneNumber[0] === "0";
+  if (isZero) {
+    return "249" + phoneNumber.slice(1).replace(/\s/g, "");
+  }
+  return "249" + phoneNumber.replace(/\s/g, "");
+};

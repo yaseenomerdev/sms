@@ -23,7 +23,7 @@ function Edit({ result }: { result: Result | null }) {
   if (!user) return <AuthGuard />;
   return (
     <div className="flex flex-col justify-center m-5">
-      <h1>Edit Result</h1>
+      <h1 className="text-primary font-extrabold text-3xl">Edit Result</h1>
       <div>
         <ResultForm currentResult={result} />
       </div>

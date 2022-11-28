@@ -2,6 +2,7 @@ import { getResultById, Result } from "features/results/state";
 import { GetServerSidePropsContext } from "next";
 import { AppContext } from "next/app";
 import Head from "next/head";
+import { BsFileEarmarkPdf } from "react-icons/bs";
 import React from "react";
 
 export async function getServerSideProps(context: any) {
@@ -22,8 +23,8 @@ function Download({ result }: { result: Result | null }) {
 
   return (
     <Layout>
-      <div className="flex flex-col justify-center items-center h-screen gap-2">
-        <img src="/icons/alpha.png" width="200" />
+      <div className="flex flex-col justify-center items-center gap-2">
+        <img src="/icons/alpha.png" width="100" />
 
         <p>{result?.name} عزيزي</p>
         <p>
@@ -34,9 +35,10 @@ function Download({ result }: { result: Result | null }) {
         <a
           href={result?.file}
           download
-          className="bg-primary text-white px-4 py-2 rounded-md"
+          className=" flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md"
         >
-          تحميل النتيجة
+          <BsFileEarmarkPdf className="inline-block text-red-600" size={30} />
+          تنزيل النتيجة
         </a>
       </div>
     </Layout>
@@ -63,7 +65,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <meta name="description" content="نتيجة معامل الزرقاء لطب العيون" />
         <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
       </Head>
-      <div>{children}</div>
+      <div dir="rtl">{children}</div>
     </>
   );
 };

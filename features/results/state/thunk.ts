@@ -126,8 +126,10 @@ export const sendResultToSms = createAsyncThunk(
     const message = `مرحبا ${name}، تم إرسال نتيجة الفحص الخاصة بكم، يمكنكم الاطلاع عليها من خلال الرابط التالي: ${fileUrl}`;
     try {
       if (!phoneNumber || !name) return;
-      const isSend = await sendSmsToUser(phoneNumber, message);
-      return id;
+      const response = await sendSmsToUser(phoneNumber, message);
+      if (response.isSend) {
+        markResultAsSent(id);
+      }
     } catch (error: any) {
       throw new Error(error?.message);
     }
@@ -137,7 +139,9 @@ export const sendResultToSms = createAsyncThunk(
 const sendSmsToUser = async (
   phone: string,
   message: string
-): Promise<boolean> => {
+): Promise<{
+  isSend: boolean;
+}> => {
   const response = await fetch("/api/sendsms", {
     method: "POST",
     headers: {
@@ -145,6 +149,16 @@ const sendSmsToUser = async (
     },
     body: JSON.stringify({ phone, message }),
   });
-
   return response.json();
+};
+
+const markResultAsSent = (id: string) => {
+  setDoc(
+    doc(firestore, "results", id),
+    {
+      sentForClient: true,
+      sentForClientAt: Date.now(),
+    },
+    { merge: true }
+  );
 };
