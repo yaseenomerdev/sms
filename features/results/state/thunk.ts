@@ -138,20 +138,13 @@ const sendSmsToUser = async (
   phone: string,
   message: string
 ): Promise<boolean> => {
-  const response = await fetch(smsUrlWithParams(phone, message));
+  const response = await fetch("/api/sendsms", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ phone, message }),
+  });
 
-  let isSend = false;
-  if (response.ok) {
-    isSend = true;
-  }
-  return isSend;
-};
-
-const smsUrlWithParams = (
-  phone: string,
-  message: string,
-  user = "Alzarga",
-  pwd = "80098"
-): string => {
-  return `https://212.0.129.229/bulksms/webacc.aspx?user=${user}&pwd=${pwd}&smstext=${message}&Sender=Alzarga&Nums=${phone}`;
+  return response.json();
 };
