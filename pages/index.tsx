@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useEffect } from "react";
 import { useUser } from "context/userContext";
+import Link from "next/link";
 
 const Home = () => {
   const { user, loading: loadingUser } = useUser();
@@ -35,9 +36,9 @@ const Home = () => {
         {!user && (
           <div className="flex flex-col justify-center items-center gap-2">
             <p> Not logged in plase login to continue</p>
-            <a className="btn-primary" href="/login">
+            <Link className="btn-primary" href="/login">
               login
-            </a>
+            </Link>
           </div>
         )}
       </main>
