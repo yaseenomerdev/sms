@@ -155,5 +155,5 @@ const smsUrlWithParams = (
   user = "Alzarga",
   pwd = "80098"
 ): string => {
-  return `http://212.0.129.229/bulksms/webacc.aspx?user=${user}&pwd=${pwd}&smstext=${message}&Sender=Alzarga&Nums=${phone}`;
+  return `https://212.0.129.229/bulksms/webacc.aspx?user=${user}&pwd=${pwd}&smstext=${message}&Sender=Alzarga&Nums=${phone}`;
 };
