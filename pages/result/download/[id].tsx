@@ -1,9 +1,13 @@
 import { getResultById, Result } from "features/results/state";
+import { GetServerSidePropsContext } from "next";
+import { AppContext } from "next/app";
 import Head from "next/head";
 import React from "react";
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;
+
+  context.preview = true;
 
   const result = await getResultById(id);
   return {
