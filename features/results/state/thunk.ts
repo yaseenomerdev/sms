@@ -138,9 +138,7 @@ const sendSmsToUser = async (
   phone: string,
   message: string
 ): Promise<boolean> => {
-  const response = await fetch(smsUrlWithParams(phone, message), {
-    mode: "no-cors",
-  });
+  const response = await fetch(smsUrlWithParams(phone, message));
 
   let isSend = false;
   if (response.ok) {
