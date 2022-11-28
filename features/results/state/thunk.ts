@@ -125,7 +125,7 @@ export const sendResultToSms = createAsyncThunk(
     const fileUrl = `https://sms-ruddy.vercel.app/result/download/${id}`;
     const message = `مرحبا ${name}، تم إرسال نتيجة الفحص الخاصة بكم، يمكنكم الاطلاع عليها من خلال الرابط التالي: ${fileUrl}`;
     try {
-      if (!phoneNumber || !name) return;
+      if (!phoneNumber || !name) throw new Error("No phone number or name");
       const response = await sendSmsToUser(phoneNumber, message);
       if (response.isSend) {
         markResultAsSent(id);
