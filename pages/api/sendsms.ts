@@ -20,7 +20,9 @@ export default async function handler(
 
   const text = await response.text();
 
-  if (text == "Ok") {
+  console.log(text);
+
+  if (text == "OK") {
     isSend = true;
   }
 
