@@ -58,6 +58,14 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
     const id = currentResult?.id || resultId.toString();
 
+    const { phoneNumber, name, file } = data;
+
+    if (!phoneNumber || !name || !file) {
+      alert("Please fill all fields");
+      setLoading(false);
+      return;
+    }
+
     try {
       await dispatch(saveResult({ id, result: data }));
 
@@ -65,8 +73,8 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
         dispatch(
           sendResultToSms({
             id,
-            phoneNumber: data.phoneNumber,
-            name: data.name,
+            phoneNumber,
+            name,
           })
         );
       }

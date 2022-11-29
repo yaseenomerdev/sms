@@ -64,10 +64,17 @@ function ResultList() {
                 <td>{result?.name}</td>
                 <td>{result?.phoneNumber}</td>
                 <td>
-                  {result?.sentForClient ? (
-                    <span className="text-green-600">Yes</span>
-                  ) : (
-                    <span className="text-red-600">No</span>
+                  {!result?.sending &&
+                    (result?.sentForClient ? (
+                      <span className="text-green-600">Yes</span>
+                    ) : (
+                      <span className="text-red-600">No</span>
+                    ))}
+
+                  {result?.sending && (
+                    <span className="text-yellow-600 animate-pulse">
+                      Sending...
+                    </span>
                   )}
                 </td>
                 <td>

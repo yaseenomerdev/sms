@@ -16,6 +16,7 @@ export interface Result {
   archiveAt: number | null;
   archiveBy: string | null;
   archiveByName: string | null;
+  sending?: boolean;
 }
 
 export const defultValueOnCreate: Partial<Result> = {

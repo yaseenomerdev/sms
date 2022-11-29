@@ -90,15 +90,18 @@ const resultsSlice = createSlice({
       state.error = action.error.message || "Something went wrong";
     });
 
-    builder.addCase(sendResultToSms.pending, (state) => {
+    builder.addCase(sendResultToSms.pending, (state, action) => {
       state.loading = true;
+      state.results = state.results.map((r) =>
+        r.id === action.meta.arg.id ? { ...r, sending: true } : r
+      );
     });
 
     builder.addCase(sendResultToSms.fulfilled, (state, action) => {
       state.loading = false;
       state.results = state.results.map((r) => {
         if (r.id === action.payload.id) {
-          return { ...r, sentForClient: true };
+          return { ...r, sentForClient: true, sending: false };
         }
         return r;
       });
@@ -108,6 +111,12 @@ const resultsSlice = createSlice({
     builder.addCase(sendResultToSms.rejected, (state, action) => {
       state.loading = false;
       state.error = null;
+      state.results = state.results.map((r) => {
+        if (r.id === action.meta.arg.id) {
+          return { ...r, sentForClient: false, sending: false };
+        }
+        return r;
+      });
     });
   },
 });

@@ -90,7 +90,7 @@ export const archiveResult = createAsyncThunk(
           archive,
           archiveBy: archiveBy || null,
           archiveByName: archiveByName || null,
-          archivedAt: new Date(),
+          archivedAt: Date.now(),
         },
         { merge: true }
       );
