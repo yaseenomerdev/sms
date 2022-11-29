@@ -82,7 +82,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
       resultId = Date.now();
       return push("/result");
     } catch (error: any) {
-      alert(JSON.stringify(error));
+      alert("Something went wrong");
     } finally {
       setResult({
         name: "",
@@ -181,7 +181,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
           <AiOutlineCloudUpload className="animate-bounce " />
           {uploading === "uploading" && "Uploading..."}
           {progress === 0 && "Upload file (pdf only) "}
-          {progress > 0 && progress < 100 && progress + "%"}
+          {progress > 0 && progress < 100 && progress.toFixed(2) + "%"}
           {progress === 100 && (
             <span className="text-primary">Uploaded successfully</span>
           )}
