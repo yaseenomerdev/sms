@@ -18,7 +18,18 @@ export async function getServerSideProps(context: any) {
 
 function Download({ result }: { result: Result | null }) {
   if (!result) {
-    return <Layout>Result not found</Layout>;
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center h-full p-5">
+          <img src="/icons/logo.png" width="200" />
+          <h1 className="text-2xl font-bold">No result found</h1>
+          <p className="text-gray-500">Please check the link and try again</p>
+          <p className="text-gray-500">
+            If you think this is a mistake, please contact us
+          </p>
+        </div>
+      </Layout>
+    );
   }
 
   return (

@@ -1,3 +1,4 @@
+import { FirebaseError } from "fire/error";
 import { sendPasswordResetEmail } from "firebase/auth";
 import React from "react";
 import { auth } from "../fire/clientApp";
@@ -12,7 +13,7 @@ export default function ForgotPasswordComponent() {
 
       alert("send email verification");
     } catch (error: any) {
-      alert(error.message);
+      return alert(FirebaseError.ParseError(error?.code));
     }
   };
 

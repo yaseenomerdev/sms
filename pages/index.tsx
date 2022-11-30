@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useEffect } from "react";
 import { useUser } from "context/userContext";
 import Link from "next/link";
+import AuthGuard from "components/AuthGuard";
 
 const Home = () => {
   const { user, loading: loadingUser } = useUser();
@@ -42,14 +43,7 @@ const Home = () => {
             {user?.displayName} wlcome to alzarga
           </p>
         )}
-        {!user && (
-          <div className="flex flex-col justify-center items-center gap-2">
-            <p> Not logged in plase login to continue</p>
-            <Link className="text-primary text-2xl" href="/login">
-              login
-            </Link>
-          </div>
-        )}
+        {!user && <AuthGuard />}
       </main>
     </div>
   );

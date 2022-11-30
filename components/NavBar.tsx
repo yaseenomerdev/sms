@@ -32,9 +32,9 @@ export default function NavBar() {
         </Link>
       </div>
       <div className="flex gap-4  ml-auto">
-        {!user && (
+        {user && (
           <Link href="signup">
-            <a href="#">Signup</a>
+            <a href="#">Register</a>
           </Link>
         )}
 

@@ -104,11 +104,10 @@ export const archiveResult = createAsyncThunk(
 export const getResultById = async (id: string): Promise<Result | null> => {
   const docRef = doc(firestore, "results", id);
   const snap = await getDoc(docRef);
-  if (!snap) return null;
-  return {
-    id: snap.id,
-    ...snap.data(),
-  } as Result;
+  if (snap.exists()) {
+    return { id, ...snap.data() } as Result;
+  }
+  return null;
 };
 
 export const sendResultToSms = createAsyncThunk(
