@@ -23,7 +23,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex items-center justify-center mt-5 gap-4">
+      <main className="flex flex-col items-center justify-center mt-5 gap-4">
         {/* <div className="relative w-full max-w-lg">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-sm"></div>
 
@@ -32,11 +32,20 @@ const Home = () => {
           <div className="absolute left-20 top-5 -bottom-8 w-72 h-72 bg-[#22cc99] rounded-full mix-blend-multiply filter blur-sm"></div>
         </div> */}
 
-        {user && <p>wlcome to alzarga {user?.displayName}</p>}
+        <p className="font-bold text-3xl text-primary">Alzarga SMS System</p>
+        <div>
+          <img src="/icons/logo.png" alt="logo" className="w-72" />
+        </div>
+
+        {user && (
+          <p className="text-primary text-2xl font-bold">
+            {user?.displayName} wlcome to alzarga
+          </p>
+        )}
         {!user && (
           <div className="flex flex-col justify-center items-center gap-2">
             <p> Not logged in plase login to continue</p>
-            <Link className="btn-primary" href="/login">
+            <Link className="text-primary text-2xl" href="/login">
               login
             </Link>
           </div>

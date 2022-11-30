@@ -6,14 +6,14 @@ import LogOut from "./LogOut";
 export default function NavBar() {
   const { loading: loadingUser, user } = useUser();
   return (
-    <nav className="flex p-5 bg-[#f4f8f9] gap-4">
+    <nav className="flex p-5 bg-secondary gap-4">
       <div className="flex gap-4">
         <Link href="/">
           <a href="#">
             <img
               className="hover:scale-105 duration-500"
-              src="icons/alpha.png"
-              width="30"
+              src="icons/logoo.png"
+              width="50"
               alt="alpha"
               style={{ display: "inline-block" }}
             />

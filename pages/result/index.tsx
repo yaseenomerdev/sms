@@ -14,6 +14,7 @@ import { IoMdEye } from "react-icons/io";
 import { useRouter } from "next/router";
 import AuthGuard from "components/AuthGuard";
 import { BsFileEarmarkPdf, BsPlus } from "react-icons/bs";
+import Head from "next/head";
 
 function ResultList() {
   const { user } = useUser();
@@ -31,6 +32,11 @@ function ResultList() {
 
   return (
     <div className="flex flex-col gap-6">
+      <Head>
+        <title>Results</title>
+
+        <meta name="description" content="Results" />
+      </Head>
       <div>
         <Link href="/result/create">
           <button className="btn-primary">

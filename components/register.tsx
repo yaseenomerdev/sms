@@ -32,10 +32,7 @@ export default function Register() {
         body,
       });
 
-      
-        push("/login");
-      
-
+      push("/login");
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -46,11 +43,11 @@ export default function Register() {
   return (
     <div className="flex  justify-center mt-10  ">
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col  gap-5 bg-[#f4f8f9] p-10 rounded-[20px] outline-2 outline-offset-8 outline-dashed outline-[#f4f8f9]">
+        <div className="flex flex-col  gap-5 bg-secondary p-10 rounded-[20px] outline-2 outline-offset-8 outline-dashed outline-[#f4f8f9]">
           <div className="flex justify-center">
-            <img src="icons/alpha.png" width="70" />
+            <img src="icons/logo.png" width="200" />
           </div>
-          <h1 className="text-[#20cc99]">Signup</h1>
+          <h1 className="text-primary font-extrabold text-xl">Register</h1>
           <div>
             <input
               type="text"
@@ -76,12 +73,12 @@ export default function Register() {
             />
           </div>
 
-          <button type="submit" className="bg-[#22cc99]">
+          <button type="submit" className="btn-primary">
             <Loading loading={loading} />
-            Signup
+            Register
           </button>
 
-          <LoginWithGoogle />
+          {/* <LoginWithGoogle /> */}
         </div>
       </form>
     </div>

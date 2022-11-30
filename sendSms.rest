@@ -1,4 +1,4 @@
 
 
 
-GET https://212.0.129.229/bulksms/webacc.aspx?user=Alzarga&pwd=80098&smstext=مرحبا بك&Sender=Alzarga&Nums=249120004585
+GET http://212.0.129.229/bulksms/webacc.aspx?user=Alzarga&pwd=80098&smstext=مرحبا بك&Sender=Alzarga&Nums=249913897350

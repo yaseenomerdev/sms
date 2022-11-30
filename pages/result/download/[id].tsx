@@ -23,8 +23,8 @@ function Download({ result }: { result: Result | null }) {
 
   return (
     <Layout>
-      <div className="flex flex-col justify-center items-center gap-2">
-        <img src="/icons/alpha.png" width="100" />
+      <div className="flex flex-col justify-center items-center text-primary font-medium text-xl gap-2">
+        <img src="/icons/logo.png" width="200" />
 
         <p>{result?.name} عزيزي</p>
         <p>
@@ -35,7 +35,7 @@ function Download({ result }: { result: Result | null }) {
         <a
           href={result?.file}
           download
-          className=" flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md"
+          className="btn-primary flex items-center cursor-pointer gap-2"
         >
           <BsFileEarmarkPdf className="inline-block text-red-600" size={30} />
           تنزيل النتيجة

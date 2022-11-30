@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import LoginWithGoogle from "./LoginWithGoogle";
 import Loading from "./Loading";
 import Link from "next/link";
+import { FirebaseError } from "fire/error";
 
 export default function LoginWIthEmailAmdPassword() {
   const roter = useRouter();
@@ -27,7 +28,7 @@ export default function LoginWIthEmailAmdPassword() {
       await signInWithEmailAndPassword(auth, email, password);
       roter.push("/");
     } catch (error: any) {
-      alert(error.message);
+      return alert(FirebaseError.ParseError(error.code));
     } finally {
       setLoading(false);
     }
@@ -36,11 +37,11 @@ export default function LoginWIthEmailAmdPassword() {
   return (
     <div className="flex  justify-center mt-10">
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col  gap-5 bg-[#f4f8f9] p-10 rounded-[20px]">
+        <div className="flex flex-col  gap-5 bg-secondary p-10 rounded-[20px] outline-2 outline-offset-8 outline-dashed outline-[#f4f8f9]">
           <div className="flex justify-center">
-            <img src="icons/alpha.png" width="70" />
+            <img src="icons/logo.png" width="200" />
           </div>
-          <h1 className="text-[#20cc99]  text-lg font-bold">Login</h1>
+          <h1 className="text-primary  text-lg font-bold">Login</h1>
 
           <div>
             <input
@@ -58,18 +59,18 @@ export default function LoginWIthEmailAmdPassword() {
             />
           </div>
 
-          <button type="submit" className="bg-[#20cc99] hover:bg-green-800">
+          <button type="submit" className="btn-primary">
             <Loading loading={loading} />
             Login{" "}
           </button>
 
-          <div className="flex justify-center text-[#20cc99]">
+          <div className="flex justify-center text-primary">
             <Link href="/forgotpassowrd">
               <a href="#">Forgot Passowrd</a>
             </Link>
           </div>
 
-          <LoginWithGoogle />
+          {/* <LoginWithGoogle /> */}
         </div>
       </form>
     </div>
