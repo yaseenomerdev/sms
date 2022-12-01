@@ -3,6 +3,7 @@ import { useUser } from "context/userContext";
 import AuthGuard from "components/AuthGuard";
 import Link from "next/link";
 import { FaClipboardList, FaUsers } from "react-icons/fa";
+import LogOut from "components/LogOut";
 
 const Home = () => {
   const { user, loading: loadingUser } = useUser();
@@ -31,9 +32,9 @@ const Home = () => {
         </div>
 
         {user && (
-          <p className="text-primary text-2xl font-bold">
+          <div className="text-primary text-2xl font-bold">
             {user?.displayName} wlcome to alzarga
-          </p>
+          </div>
         )}
         <div className="flex items-center justify-center gap-4">
           <Link href="/result">
@@ -58,6 +59,10 @@ const Home = () => {
               Users
             </div>
           </Link>
+        </div>
+
+        <div>
+          <LogOut />
         </div>
       </main>
     </div>
