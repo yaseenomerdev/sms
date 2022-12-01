@@ -46,6 +46,13 @@
   .bg-secondary {
     @apply bg-[#f3f1ff];
   }
+  .border-primary {
+    @apply border-[#1b1364];
+  }
+
+  .border-secondary {
+    @apply border-[#f3f1ff];
+  }
 }
 
 @layer base {

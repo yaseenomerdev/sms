@@ -1,6 +1,10 @@
 import React from "react";
 import ForgotPasswordComponent from "../components/ForgotPasswordComponent";
 
-export default function Forgotpassowrd() {
+const Forgotpassowrd = () => {
   return <ForgotPasswordComponent />;
-}
+};
+
+Forgotpassowrd.layout = "L2";
+
+export default Forgotpassowrd;

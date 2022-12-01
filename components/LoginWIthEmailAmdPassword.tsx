@@ -6,6 +6,8 @@ import LoginWithGoogle from "./LoginWithGoogle";
 import Loading from "./Loading";
 import Link from "next/link";
 import { FirebaseError } from "fire/error";
+import { GiHouseKeys } from "react-icons/gi";
+import { AiOutlineLogin } from "react-icons/ai";
 
 export default function LoginWIthEmailAmdPassword() {
   const roter = useRouter();
@@ -61,12 +63,16 @@ export default function LoginWIthEmailAmdPassword() {
 
           <button type="submit" className="btn-primary">
             <Loading loading={loading} />
+            <AiOutlineLogin size={20} className="mr-2" />
             Login{" "}
           </button>
 
           <div className="flex justify-center text-primary">
             <Link href="/forgotpassowrd">
-              <a href="#">Forgot Passowrd</a>
+              <a href="#" className="flex">
+                <GiHouseKeys size={30} />
+                Forgot Passowrd
+              </a>
             </Link>
           </div>
 

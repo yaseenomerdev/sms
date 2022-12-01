@@ -1,25 +1,17 @@
 import Head from "next/head";
-import { useEffect } from "react";
 import { useUser } from "context/userContext";
-import Link from "next/link";
 import AuthGuard from "components/AuthGuard";
+import Link from "next/link";
+import { FaClipboardList, FaUsers } from "react-icons/fa";
 
 const Home = () => {
   const { user, loading: loadingUser } = useUser();
 
-  useEffect(() => {
-    if (!loadingUser) {
-      // You know that the user is loaded: either logged in or out!
-    }
-    // You also have your firebase app initialized
-  }, [loadingUser, user]);
-
-  if (loadingUser) return <p>loading ...</p>;
-
+  if (!user) return <AuthGuard />;
   return (
     <div>
       <Head>
-        <title>الزرقاء لطب العيون</title>
+        <title>مركز الزرقاء التخصصي لطب العيون</title>
         <meta name="description" content="الزرقاء لطب العيون" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -43,10 +35,35 @@ const Home = () => {
             {user?.displayName} wlcome to alzarga
           </p>
         )}
-        {!user && <AuthGuard />}
+        <div className="flex items-center justify-center gap-4">
+          <Link href="/result">
+            <div
+              className="flex justify-center items-center p-6
+            border border-primary  cursor-pointer text-primary
+            hover:bg-primary hover:text-white duration-300 gap-2
+            "
+            >
+              <FaClipboardList className="w-10 h-10 " />
+              Results
+            </div>
+          </Link>
+          <Link href="/users">
+            <div
+              className="flex justify-center items-center p-6
+            border border-primary  cursor-pointer text-primary
+            hover:bg-primary hover:text-white duration-300 gap-2
+            "
+            >
+              <FaUsers className="w-10 h-10 " />
+              Users
+            </div>
+          </Link>
+        </div>
       </main>
     </div>
   );
 };
+
+Home.layout = "L2";
 
 export default Home;

@@ -2,7 +2,8 @@ import Head from "next/head";
 import React from "react";
 import LoginWIthEmailAmdPassword from "../components/LoginWIthEmailAmdPassword";
 
-export default function Login() {
+
+const Login = () => {
   return (
     <>
       <Head>
@@ -13,4 +14,8 @@ export default function Login() {
       </main>
     </>
   );
-}
+};
+
+Login.layout = "L2";
+
+export default Login;
