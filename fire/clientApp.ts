@@ -56,9 +56,23 @@ export function convertSnaps<T extends { id: string }>(
   return data;
 }
 
-export const deleteFileFromStorage = async (path: string) => {
-  if (path) {
-    const storageRef = ref(storage, path);
-    deleteObject(storageRef);
+export const deleteFileFromStorage = async (path: string[] | string) => {
+  if (path && Array.isArray(path)) {
+    path.map(async (p) => {
+      await deleteFile(p);
+    });
+    return;
   }
+
+  if (path && typeof path == "string") {
+    await deleteFile(path);
+    return;
+  }
+
+  return;
+};
+
+export const deleteFile = async (file: string) => {
+  const storageRef = ref(storage, file);
+  await deleteObject(storageRef);
 };

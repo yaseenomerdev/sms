@@ -3,7 +3,8 @@ export interface Result {
   name: string;
   description: string;
   phoneNumber: string;
-  file: string;
+  file?: string;
+  files?: string[];
   createdAt: number;
   createdBy: string | null;
   createdByName: string | null;

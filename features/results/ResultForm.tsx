@@ -1,5 +1,5 @@
 import { useUser } from "context/userContext";
-import { uploadTask } from "fire/clientApp";
+import { deleteFileFromStorage, uploadTask } from "fire/clientApp";
 import {
   getDownloadURL,
   StorageError,
@@ -7,7 +7,7 @@ import {
   UploadTaskSnapshot,
 } from "firebase/storage";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useAppDispatch } from "store";
 import {
   checkFileIsPdf,
@@ -17,25 +17,41 @@ import {
   sendResultToSms,
 } from "./state";
 import { ImSpinner10 } from "react-icons/im";
-import { AiOutlineCloudUpload, AiOutlineSave } from "react-icons/ai";
+import { AiOutlineSave } from "react-icons/ai";
+import FileInput from "components/FileInput";
+import { MdOutlineDelete } from "react-icons/md";
+import { VscLoading } from "react-icons/vsc";
 
 let resultId = Date.now();
 
 function ResultForm({ currentResult }: { currentResult?: Result }) {
-  const [result, setResult] = React.useState({
+  const [result, setResult] = useState({
     name: currentResult?.name || "",
     description: currentResult?.description || "",
     phoneNumber: currentResult?.phoneNumber || "",
-    file: currentResult?.file || "",
+    files: currentResult?.files || [],
   });
+
+  const [files, setFiles] = useState<
+    {
+      fileUrl: string;
+      fileName: string;
+    }[]
+  >([]);
+
+  const [fileUrlDelete, setFileUrlDelete] = useState<string>("");
+
+  const deleteFile = async (fileUrl: string) => {
+    setFileUrlDelete(fileUrl);
+    await deleteFileFromStorage(fileUrl);
+    const filterFiles = files.filter((file) => file.fileUrl != fileUrl);
+    setFileUrlDelete("");
+    setFiles(filterFiles);
+  };
 
   const dispatch = useAppDispatch();
 
   const { user } = useUser();
-
-  const [progress, setProgress] = React.useState(0);
-
-  const [uploading, setUploading] = React.useState("");
 
   const [loading, setLoading] = React.useState(false);
 
@@ -51,6 +67,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
       createdByName: user?.displayName || null,
       ...defultValueOnCreate,
       ...result,
+      files: currentResult?.files || files.map((file) => file.fileUrl),
       phoneNumber:
         currentResult?.phoneNumber ||
         checkIsFristNumberIsZero(result.phoneNumber),
@@ -60,7 +77,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
 
     const { phoneNumber, name, file } = data;
 
-    if (!phoneNumber || !name || !file) {
+    if (!phoneNumber || !name || files.length < 0) {
       alert("Please fill all fields");
       setLoading(false);
       return;
@@ -89,6 +106,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
         description: "",
         phoneNumber: "",
         file: "",
+        files: [],
       });
       setLoading(false);
     }
@@ -170,7 +188,7 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
         ></textarea>
       </div>
 
-      <div>
+      {/* <div>
         <label
           htmlFor="file"
           className="flex btn-secondary items-center gap-2"
@@ -194,14 +212,49 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
             onChange={handleChange}
           />
         </label>
+      </div> */}
+
+      <div>
+        {files.length > 0 && (
+          <table className="table-auto bg-white">
+            <tbody>
+              {files.map((file, x) => (
+                <tr key={file.fileUrl}>
+                  <td>{x + 1}</td>
+                  <td>{file.fileName}</td>
+                  <td>
+                    {fileUrlDelete == file.fileUrl ? (
+                      <VscLoading className="animate-spin" />
+                    ) : (
+                      <MdOutlineDelete
+                        onClick={(e) => deleteFile(file.fileUrl)}
+                        className="cursor-pointer hover:scale-105 duration-200"
+                        size={25}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       <div>
-        <button
-          type="submit"
-          disabled={loading || uploading === "uploading"}
-          className="btn-primary"
-        >
+        <FileInput
+          id={currentResult?.id || resultId.toString()}
+          onUploadSuccess={(fileUrl, fileName) =>
+            setFiles([...files, { fileUrl, fileName }])
+          }
+        />
+        {/* <MyDropzone
+          id={currentResult?.id || resultId.toString()}
+          onSuccss={onSuccss}
+        /> */}
+      </div>
+
+      <div>
+        <button type="submit" disabled={loading} className="btn-primary">
           {loading && <ImSpinner10 className="animate-spin" />}
           <AiOutlineSave className="mr-1" size={20} />
           Save

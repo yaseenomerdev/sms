@@ -4,6 +4,8 @@ import { AppContext } from "next/app";
 import Head from "next/head";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 import React from "react";
+import ShowFile from "components/ShowFile";
+import { getFileType } from "utils/extention.util";
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;
@@ -43,14 +45,33 @@ function Download({ result }: { result: Result | null }) {
           نتيجة فحصك
         </p>
 
-        <a
+        {/* <a
           href={result?.file}
           download
           className="btn-primary flex items-center cursor-pointer gap-2"
         >
           <BsFileEarmarkPdf className="inline-block text-red-600" size={30} />
           تنزيل النتيجة
-        </a>
+        </a> */}
+
+        <div className="flex gap-5">
+          {result?.files &&
+            result?.files?.map((file) => (
+              <ShowFile download {...getFileType(file)} />
+            ))}
+          {result?.file && (
+            <a
+              href={result?.file}
+              target="_blank"
+              rel="noreferrer"
+              className="flex"
+              download
+            >
+              <BsFileEarmarkPdf size={30} className="text-red-600" />
+              تنزيل
+            </a>
+          )}
+        </div>
       </div>
     </Layout>
   );

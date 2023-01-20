@@ -15,6 +15,9 @@ import { useRouter } from "next/router";
 import AuthGuard from "components/AuthGuard";
 import { BsFileEarmarkPdf, BsPlus } from "react-icons/bs";
 import Head from "next/head";
+import Moment from "react-moment";
+import ShowFile from "components/ShowFile";
+import { getFileType } from "utils/extention.util";
 
 function ResultList() {
   const { user } = useUser();
@@ -51,6 +54,7 @@ function ResultList() {
           <thead>
             <tr>
               <th>#</th>
+              <th>Date</th>
               <th>File</th>
               <th>Name</th>
               <th>Phone Number</th>
@@ -63,9 +67,20 @@ function ResultList() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  <a href={result?.file} target="_blank" rel="noreferrer">
-                    <BsFileEarmarkPdf size={30} className="text-red-600" />
-                  </a>
+                  <Moment fromNow>{result?.createdAt}</Moment>
+                </td>
+                <td>
+                  <div className="flex gap-2">
+                    {result?.files &&
+                      result?.files?.map((file) => (
+                        <ShowFile {...getFileType(file)} />
+                      ))}
+                    {result?.file && (
+                      <a href={result?.file} target="_blank" rel="noreferrer">
+                        <BsFileEarmarkPdf size={30} className="text-red-600" />
+                      </a>
+                    )}
+                  </div>
                 </td>
                 <td>{result?.name}</td>
                 <td>{result?.phoneNumber}</td>
@@ -135,7 +150,10 @@ function ResultList() {
                       onClick={() =>
                         confirm(
                           "Are you sure you want to delete this result?"
-                        ) && dispatch(deleteResult(result.id))
+                        ) &&
+                        dispatch(
+                          deleteResult(result.id, result?.file || result?.files)
+                        )
                       }
                     >
                       <MdDelete />

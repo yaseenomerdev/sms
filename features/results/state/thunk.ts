@@ -9,6 +9,8 @@ import {
   query,
   setDoc,
   where,
+  limit,
+  orderBy,
 } from "firebase/firestore";
 import { Result } from "./model";
 
@@ -22,7 +24,9 @@ export const fetchResults = createAsyncThunk(
     try {
       const q = query(
         collection(firestore, "results"),
-        where("archive", "==", false)
+        where("archive", "==", false),
+        orderBy("createdAt", "desc"),
+        limit(20)
       );
       const snaps = await getDocs(q);
       return convertSnaps<Result>(snaps);
@@ -55,10 +59,10 @@ export const saveResult = createAsyncThunk(
  */
 export const deleteResult = createAsyncThunk(
   "result/deleteResult",
-  async (id: string) => {
+  async (id: string, file: string | string[]) => {
     try {
       await deleteDoc(doc(firestore, "results", id));
-      deleteFileFromStorage(`results/${id}`);
+      deleteFileFromStorage(file);
       return id;
     } catch (error: any) {
       throw new Error(error?.message);

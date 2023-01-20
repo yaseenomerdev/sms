@@ -12,6 +12,8 @@ import { BsTelephone } from "react-icons/bs";
 import { getResultById, Result } from "features/results/state";
 import AuthGuard from "components/AuthGuard";
 import { useUser } from "context/userContext";
+import ShowFile from "components/ShowFile";
+import { getFileType } from "utils/extention.util";
 
 export async function getServerSideProps(context: any) {
   const { id } = context.params;
@@ -32,17 +34,31 @@ function ResultDetails({ result }: { result: Result | null }) {
   if (!user) return <AuthGuard />;
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-2  bg-secondary p-6 gap-4">
-      {/* <div>
-        <img src={result?.file || getRandomImage} width="200" />
-      </div> */}
+      {/*
+          <div>
+            <img src={result?.file || getRandomImage} width="200" />
+          </div>
+       */}
+
       <div>
-        <object
+        {/* <object
           data={result?.file}
           type="application/pdf"
           width="100%"
           height="100%"
-        />
+        /> */}
+
+        <div className="flex gap-2">
+          {result?.files &&
+            result?.files?.map((file) => <ShowFile {...getFileType(file)} />)}
+          {result?.file && (
+            <a href={result?.file} target="_blank" rel="noreferrer">
+              <BsFileEarmarkPdf size={30} className="text-red-600" />
+            </a>
+          )}
+        </div>
       </div>
+
       <div>
         <div className="flex gap-4">
           <HiOutlineUser className=" text-gray-500" />

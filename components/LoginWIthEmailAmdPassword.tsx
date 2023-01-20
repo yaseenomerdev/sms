@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import LoginWithGoogle from "./LoginWithGoogle";
 import Loading from "./Loading";
-import Link from "next/link";
+import Link from "next/link"; 
 import { FirebaseError } from "fire/error";
 import { GiHouseKeys } from "react-icons/gi";
 import { AiOutlineLogin } from "react-icons/ai";

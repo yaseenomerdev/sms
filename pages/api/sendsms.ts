@@ -12,21 +12,21 @@ export default async function handler(
 
   let isSend = false;
   if (!phone || !message)
-    return res.status(400).json({
-      isSend,
-    });
+    throw new Error("message and phone number is require");
 
-  const response = await fetch(smsUrlWithParams(phone, message));
+  try {
+    const response = await fetch(smsUrlWithParams(phone, message));
 
-  const text = await response.text();
+    const text = await response.text();
 
-  console.log(text);
+    if (text != "OK") {
+      throw new Error("message not send server error");
+    }
 
-  if (text == "OK") {
-    isSend = true;
+    res.status(200).json({ isSend });
+  } catch (error) {
+    res.status(500).json({ isSend: false });
   }
-
-  res.status(200).json({ isSend });
 }
 
 const smsUrlWithParams = (

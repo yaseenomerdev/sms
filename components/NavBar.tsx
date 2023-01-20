@@ -9,7 +9,7 @@ export default function NavBar() {
     <nav className="flex p-5 bg-secondary gap-4">
       <div className="flex gap-4">
         <Link href="/">
-          <a href="#">
+          <a href="/">
             <img
               className="hover:scale-105 duration-500"
               src="icons/logoo.png"
@@ -20,34 +20,34 @@ export default function NavBar() {
           </a>
         </Link>
         <Link href="/">
-          <a href="#">Home</a>
+          <a href="/">Home</a>
         </Link>
 
         <Link href="/result">
-          <a href="#">Result</a>
+          <a href="/result">Result</a>
         </Link>
 
         <Link href="/users">
-          <a href="#">Users</a>
+          <a href="/users">Users</a>
         </Link>
       </div>
       <div className="flex gap-4  ml-auto">
-        {user && (
+        {/* {user && (
           <Link href="signup">
-            <a href="#">Register</a>
+            <a href="signup">Register</a>
           </Link>
-        )}
+        )} */}
 
         {!user && (
           <Link href="login">
-            <a href="#">Login</a>
+            <a href="login">Login</a>
           </Link>
         )}
 
         {user && (
-          <a href="#">
+          <span className="cursor-pointer">
             <LogOut />
-          </a>
+          </span>
         )}
       </div>
     </nav>
