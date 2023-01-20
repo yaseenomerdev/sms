@@ -105,45 +105,44 @@ function ResultForm({ currentResult }: { currentResult?: Result }) {
         name: "",
         description: "",
         phoneNumber: "",
-        file: "",
         files: [],
       });
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file: File = (e.target.files as FileList)[0];
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file: File = (e.target.files as FileList)[0];
 
-    if (!checkFileIsPdf(file)) return alert("File must be pdf");
+  //   if (!checkFileIsPdf(file)) return alert("File must be pdf");
 
-    setUploading("uploading");
+  //   setUploading("uploading");
 
-    const upload: UploadTask = uploadTask(
-      file,
-      `results/${currentResult?.id || resultId}`
-    );
+  //   const upload: UploadTask = uploadTask(
+  //     file,
+  //     `results/${currentResult?.id || resultId}`
+  //   );
 
-    upload.on(
-      "state_changed",
-      (snapshot: UploadTaskSnapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //   upload.on(
+  //     "state_changed",
+  //     (snapshot: UploadTaskSnapshot) => {
+  //       const progress =
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        setProgress(progress);
-      },
-      (error: StorageError) => {
-        console.log(error);
-        setUploading("");
-      },
-      () => {
-        getDownloadURL(upload.snapshot.ref).then((downloadURL) => {
-          setResult({ ...result, file: downloadURL });
-        });
-        setUploading("");
-      }
-    );
-  };
+  //       setProgress(progress);
+  //     },
+  //     (error: StorageError) => {
+  //       console.log(error);
+  //       setUploading("");
+  //     },
+  //     () => {
+  //       getDownloadURL(upload.snapshot.ref).then((downloadURL) => {
+  //         setResult({ ...result, file: downloadURL });
+  //       });
+  //       setUploading("");
+  //     }
+  //   );
+  // };
 
   return (
     <form

@@ -57,7 +57,7 @@ function Download({ result }: { result: Result | null }) {
         <div className="flex gap-5">
           {result?.files &&
             result?.files?.map((file) => (
-              <ShowFile download {...getFileType(file)} />
+              <ShowFile key={file} download {...getFileType(file)} />
             ))}
           {result?.file && (
             <a

@@ -50,7 +50,9 @@ function ResultDetails({ result }: { result: Result | null }) {
 
         <div className="flex gap-2">
           {result?.files &&
-            result?.files?.map((file) => <ShowFile {...getFileType(file)} />)}
+            result?.files?.map((file) => (
+              <ShowFile key={file} {...getFileType(file)} />
+            ))}
           {result?.file && (
             <a href={result?.file} target="_blank" rel="noreferrer">
               <BsFileEarmarkPdf size={30} className="text-red-600" />

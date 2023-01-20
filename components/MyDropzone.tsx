@@ -81,23 +81,11 @@ function MyDropzone({
 
       <div className="flex flex-col">
         {fileUrls.map((f, x) => (
-          <div className="flex gap-2">
-            <BsCheckLg
-              key={crypto.randomUUID() + x}
-              className="text-green-600"
-            />{" "}
-            <span>{x + 1}</span>
+          <div key={crypto.randomUUID() + x} className="flex gap-2">
+            <BsCheckLg className="text-green-600" /> <span>{x + 1}</span>
           </div>
         ))}
       </div>
-
-      {/* {error && (
-        <Flex color="red" gap={2}>
-          {error}
-
-          <CloseIcon color="red" />
-        </Flex>
-      )} */}
 
       {loading && (
         <div className="flex gap-2">
@@ -105,8 +93,6 @@ function MyDropzone({
           <CgSpinner className="animate-spin" size={30} />
         </div>
       )}
-
-      {/* {uploaded && <CheckIcon color="green" />} */}
     </div>
   );
 }

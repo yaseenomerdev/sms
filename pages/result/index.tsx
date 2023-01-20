@@ -73,7 +73,7 @@ function ResultList() {
                   <div className="flex gap-2">
                     {result?.files &&
                       result?.files?.map((file) => (
-                        <ShowFile {...getFileType(file)} />
+                        <ShowFile key={file} {...getFileType(file)} />
                       ))}
                     {result?.file && (
                       <a href={result?.file} target="_blank" rel="noreferrer">
@@ -152,7 +152,10 @@ function ResultList() {
                           "Are you sure you want to delete this result?"
                         ) &&
                         dispatch(
-                          deleteResult(result.id, result?.file || result?.files)
+                          deleteResult({
+                            id: result.id,
+                            file: result?.file || result?.files || [],
+                          })
                         )
                       }
                     >

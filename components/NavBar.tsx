@@ -9,27 +9,20 @@ export default function NavBar() {
     <nav className="flex p-5 bg-secondary gap-4">
       <div className="flex gap-4">
         <Link href="/">
-          <a href="/">
-            <img
-              className="hover:scale-105 duration-500"
-              src="icons/logoo.png"
-              width="50"
-              alt="alpha"
-              style={{ display: "inline-block" }}
-            />
-          </a>
-        </Link>
-        <Link href="/">
-          <a href="/">Home</a>
+          <img
+            className="hover:scale-105 duration-500"
+            src="icons/logoo.png"
+            width="50"
+            alt="alpha"
+            style={{ display: "inline-block" }}
+          />
         </Link>
 
-        <Link href="/result">
-          <a href="/result">Result</a>
-        </Link>
+        <Link href="/">Home</Link>
 
-        <Link href="/users">
-          <a href="/users">Users</a>
-        </Link>
+        <Link href="/result">Result</Link>
+
+        <Link href="/users">Users</Link>
       </div>
       <div className="flex gap-4  ml-auto">
         {/* {user && (
@@ -38,11 +31,7 @@ export default function NavBar() {
           </Link>
         )} */}
 
-        {!user && (
-          <Link href="login">
-            <a href="login">Login</a>
-          </Link>
-        )}
+        {!user && <Link href="/login">Login</Link>}
 
         {user && (
           <span className="cursor-pointer">

@@ -56,10 +56,11 @@ export const saveResult = createAsyncThunk(
 /**
  * Delete a result
  * @param {string} id
+ * @param {string | string[]} file
  */
 export const deleteResult = createAsyncThunk(
   "result/deleteResult",
-  async (id: string, file: string | string[]) => {
+  async ({ id, file }: { id: string; file: string | string[] }) => {
     try {
       await deleteDoc(doc(firestore, "results", id));
       deleteFileFromStorage(file);
