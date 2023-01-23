@@ -3,6 +3,7 @@ import { Result } from "./model";
 import {
   archiveResult,
   deleteResult,
+  fetchMoreResults,
   fetchResults,
   getResultById,
   saveResult,
@@ -26,12 +27,29 @@ const resultsSlice = createSlice({
     builder.addCase(
       fetchResults.fulfilled,
       (state, action: PayloadAction<Result[]>) => {
-        state.results = action.payload;
+        state.results = [...action.payload];
         state.loading = false;
         state.error = null;
       }
     );
     builder.addCase(fetchResults.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Something went wrong";
+    });
+
+    // fetch more result
+    builder.addCase(fetchMoreResults.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      fetchMoreResults.fulfilled,
+      (state, action: PayloadAction<Result[]>) => {
+        state.results = [...state.results, ...action.payload];
+        state.loading = false;
+        state.error = null;
+      }
+    );
+    builder.addCase(fetchMoreResults.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "Something went wrong";
     });

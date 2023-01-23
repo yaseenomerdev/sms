@@ -2,12 +2,13 @@ import { useUser } from "context/userContext";
 import {
   archiveResult,
   deleteResult,
+  fetchMoreResults,
   fetchResults,
   Result,
   sendResultToSms,
 } from "features/results/state";
 import Link from "next/link";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { AppState, useAppDispatch, useAppSelector } from "store";
 import { MdModeEdit, MdDelete, MdArchive } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
@@ -20,7 +21,7 @@ import ShowFile from "components/ShowFile";
 import { getFileType } from "utils/extention.util";
 import { Menu, Transition } from "@headlessui/react";
 import { SlOptionsVertical } from "react-icons/sl";
-import { FaSms } from "react-icons/fa";
+import { FaSms, FaSpinner } from "react-icons/fa";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -30,7 +31,9 @@ function ResultList() {
   const { user } = useUser();
   const dispatch = useAppDispatch();
 
-  const { results } = useAppSelector((state: AppState) => state.result);
+  const { results, loading } = useAppSelector(
+    (state: AppState) => state.result
+  );
 
   React.useEffect(() => {
     dispatch(fetchResults());
@@ -308,6 +311,17 @@ function ResultList() {
             ))}
           </tbody>
         </table>
+
+        <div className="flex justify-center items-center gap-4 p-5">
+          <button
+            onClick={(e) =>
+              dispatch(fetchMoreResults(results[results.length - 1]?.createdAt))
+            }
+          >
+            {loading && <FaSpinner className="animate-spin" />}
+            Load More Result
+          </button>
+        </div>
       </div>
     </div>
   );

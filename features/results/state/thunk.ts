@@ -11,6 +11,8 @@ import {
   where,
   limit,
   orderBy,
+  startAt,
+  startAfter,
 } from "firebase/firestore";
 import { Result } from "./model";
 
@@ -18,15 +20,35 @@ import { Result } from "./model";
  * Get all results
  * @returns {Promise<Result[]>}
  */
-export const fetchResults = createAsyncThunk(
+export const fetchMoreResults = createAsyncThunk(
   "result/fetchResults",
-  async () => {
+  async (start: number = Date.now()) => {
     try {
       const q = query(
         collection(firestore, "results"),
         where("archive", "==", false),
         orderBy("createdAt", "desc"),
-        limit(20)
+        startAfter(start),
+        limit(10)
+      );
+      const snaps = await getDocs(q);
+      return convertSnaps<Result>(snaps);
+    } catch (error: any) {
+      throw new Error(error?.message);
+    }
+  }
+);
+
+export const fetchResults = createAsyncThunk(
+  "result/fetchMoreResults",
+  async (start: number = Date.now()) => {
+    try {
+      const q = query(
+        collection(firestore, "results"),
+        where("archive", "==", false),
+        orderBy("createdAt", "desc"),
+        startAfter(start),
+        limit(10)
       );
       const snaps = await getDocs(q);
       return convertSnaps<Result>(snaps);
