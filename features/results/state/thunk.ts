@@ -149,13 +149,16 @@ const sendSmsToUser = async (
 ): Promise<{
   isSend: boolean;
 }> => {
-  const response = await fetch("/api/sendsms", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ phone, message }),
-  });
+  const response = await fetch(
+    "https://sms-service-kx9g.onrender.com/send-sms",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone, message }),
+    }
+  );
   return response.json();
 };
 
